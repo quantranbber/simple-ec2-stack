@@ -1,6 +1,6 @@
 data "aws_rds_engine_version" "version" {
   engine             = "postgres"
-  preferred_versions = ["16.3"]
+  preferred_versions = ["14.7"]
 }
 
 resource "random_password" "db_password" {
@@ -43,12 +43,12 @@ resource "aws_db_instance" "rds_postgres" {
 }
 
 # disable ssl check
-resource "aws_db_parameter_group" "custom_pg15" {
-  name   = "custom-postgres15-ssl"
-  family = "postgres15"
+# resource "aws_db_parameter_group" "custom_pg15" {
+#   name   = "custom-postgres15-ssl"
+#   family = "postgres15"
 
-  parameter {
-    name  = "rds.force_ssl"
-    value = "0"
-  }
-}
+#   parameter {
+#     name  = "rds.force_ssl"
+#     value = "0"
+#   }
+# }
