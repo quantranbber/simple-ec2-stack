@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "sync": "aws s3 sync . s3://terraform-test-bucket-7634341/codes --exclude \"*\" --include \"package.json\" --include \"package-lock.json\" --include \"index.js\"",
+    "fmt": "cd terraform && terraform fmt",
     "start": "node index.js"
   },
   "author": "",

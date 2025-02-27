@@ -17,4 +17,7 @@ module "project" {
   artifact_bucket = var.artifact_bucket
   db_name = var.db_name
   db_user= var.db_user
+  ecr_repo_name = var.ecr_repo_name
+  environment = var.environment
+  default_region = var.default_region
 }

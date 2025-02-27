@@ -14,4 +14,10 @@ resource "aws_launch_template" "my_launch_template" {
   lifecycle {
     create_before_destroy = true
   }
+  depends_on = [ aws_db_instance.rds_postgres, null_resource.build_image ]
+}
+
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [aws_launch_template.my_launch_template]
+  create_duration = "120s"
 }

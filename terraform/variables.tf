@@ -4,6 +4,12 @@ variable "default_region" {
   default     = "ap-southeast-1"
 }
 
+variable "environment" {
+  type        = string
+  description = "default region"
+  default     = "dev"
+}
+
 variable "instance_type" {
   type        = string
   description = "ec2 instance type"
@@ -25,5 +31,11 @@ variable "db_name" {
 variable "db_user" {
   type        = string
   description = "db user"
+  default     = "myprj"
+}
+
+variable "ecr_repo_name" {
+  type        = string
+  description = "ecr repository name"
   default     = "myprj"
 }

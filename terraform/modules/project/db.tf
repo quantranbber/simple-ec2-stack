@@ -39,27 +39,3 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-resource "aws_ssm_parameter" "db_host" {
-  name  = "/myapp/DB_HOST"
-  type  = "String"
-  value = aws_db_instance.rds_postgres.address
-}
-
-resource "aws_ssm_parameter" "db_user" {
-  name  = "/myapp/DB_USER"
-  type  = "String"
-  value = var.db_user
-}
-
-resource "aws_ssm_parameter" "db_password" {
-  name  = "/myapp/DB_PASSWORD"
-  type  = "SecureString"
-  value = random_password.db_password.result
-}
-
-resource "aws_ssm_parameter" "db_name" {
-  name  = "/myapp/DB_NAME"
-  type  = "String"
-  value = var.db_name
-}
