@@ -1,6 +1,6 @@
 data "aws_rds_engine_version" "version" {
   engine             = "postgres"
-  preferred_versions = ["14.7"]
+  preferred_versions = ["14.17"]
 }
 
 resource "random_password" "db_password" {

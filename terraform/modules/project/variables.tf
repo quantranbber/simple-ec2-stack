@@ -2,14 +2,7 @@ variable "default_region" {}
 variable "environment" {}
 variable "instance_type" {}
 variable "artifact_bucket" {}
-variable "db_name" {}
-variable "db_user" {}
+variable "vpc_id" {}
 variable "ecr_repo_name" {}
-variable "project_image_scan_on_push" {
-  type    = string
-  default = "true"
-}
-variable "project_image_tag_mutability" {
-  type    = string
-  default = "MUTABLE"
-}
+variable "ecr_repository_url" {}
+variable "db_sg_id" {}

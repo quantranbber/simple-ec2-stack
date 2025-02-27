@@ -73,6 +73,11 @@ resource "aws_iam_role_policy_attachment" "ssm_readonly_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "ssm_policy" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "ec2_profile"
   role = aws_iam_role.ec2_role.name

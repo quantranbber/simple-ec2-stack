@@ -1,7 +1,12 @@
 const express = require('express')
 const pgp = require('pg-promise')();
+const bodyParser = require("body-parser");
+
 const app = express()
 const port = 3000
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = pgp({
   host: process.env.DB_HOST,
@@ -43,16 +48,16 @@ app.post('/insert', async (req, res) => {
     const result = await db.one('INSERT INTO users(name, email) VALUES($1, $2) RETURNING *', [name, email]);
     res.status(201).json({
       message: 'User added successfully',
-      user: result.rows[0],
+      user: result,
     });
   } catch (err) {
-    console.error(error);
+    console.error(err);
     res.status(500).json({ error: 'Failed to insert data into database' });
   }
   
 });
 
-app.get('/', async (req, res) => {
+app.get('/', async (_req, res) => {
   console.log('start get users')
   await createTableIfNotExists();
 
@@ -60,6 +65,14 @@ app.get('/', async (req, res) => {
   res.status(200).json(
     {
       users: users || []
+    }
+  )
+})
+
+app.get('/health', (_req, res) => {
+  res.status(200).json(
+    {
+      message: 'OK'
     }
   )
 })

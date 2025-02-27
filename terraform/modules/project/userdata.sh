@@ -12,6 +12,9 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 sudo ./aws/install
 
+###### start ssm agent
+snap start amazon-ssm-agent
+
 ###### install cloudwatch agent
 wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
 dpkg -i -E ./amazon-cloudwatch-agent.deb
@@ -30,24 +33,24 @@ usermod -aG docker ubuntu
 
 ##### pull ecr image and run
 # set env
-ECR_URL=$(aws ssm get-parameter --name "/myapp/ecr/url" --query "Parameter.Value" --output text)
-ECR_IMAGE=$(aws ssm get-parameter --name "/myapp/ecr/image" --query "Parameter.Value" --output text)
-DB_HOST=$(aws ssm get-parameter --name "/myapp/db/DB_HOST" --query "Parameter.Value" --output text)
-DB_NAME=$(aws ssm get-parameter --name "/myapp/db/DB_NAME" --query "Parameter.Value" --output text)
-DB_USER=$(aws ssm get-parameter --name "/myapp/db/DB_USER" --query "Parameter.Value" --output text)
-DB_PASSWORD=$(aws ssm get-parameter --with-decryption --name "/myapp/db/DB_PASSWORD" --query "Parameter.Value" --output text)
+# ECR_URL=$(aws ssm get-parameter --name "/myapp/ecr/url" --query "Parameter.Value" --output text)
+# ECR_IMAGE=$(aws ssm get-parameter --name "/myapp/ecr/image" --query "Parameter.Value" --output text)
+# DB_HOST=$(aws ssm get-parameter --name "/myapp/db/DB_HOST" --query "Parameter.Value" --output text)
+# DB_NAME=$(aws ssm get-parameter --name "/myapp/db/DB_NAME" --query "Parameter.Value" --output text)
+# DB_USER=$(aws ssm get-parameter --name "/myapp/db/DB_USER" --query "Parameter.Value" --output text)
+# DB_PASSWORD=$(aws ssm get-parameter --with-decryption --name "/myapp/db/DB_PASSWORD" --query "Parameter.Value" --output text)
 
 # run docker container
-aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_URL
-docker pull $ECR_URL/$ECR_IMAGE
-docker run -d -p 3000:3000 \
-    --name=myprj \
-    --log-driver=awslogs \
-    --log-opt awslogs-region=ap-southeast-1 \
-    --log-opt awslogs-group=myprjLogGroup \
-    --log-opt awslogs-create-group=true \
-    -e DB_HOST=$DB_HOST \
-    -e DB_NAME=$DB_NAME \
-    -e DB_USER=$DB_USER \
-    -e DB_PASSWORD=$DB_PASSWORD \
-    $ECR_URL/$ECR_IMAGE 
+# aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_URL
+# docker pull $ECR_URL/$ECR_IMAGE
+# docker run -d -p 3000:3000 \
+#     --name=myprj \
+#     --log-driver=awslogs \
+#     --log-opt awslogs-region=ap-southeast-1 \
+#     --log-opt awslogs-group=myprjLogGroup \
+#     --log-opt awslogs-create-group=true \
+#     -e DB_HOST=$DB_HOST \
+#     -e DB_NAME=$DB_NAME \
+#     -e DB_USER=$DB_USER \
+#     -e DB_PASSWORD=$DB_PASSWORD \
+#     $ECR_URL/$ECR_IMAGE 

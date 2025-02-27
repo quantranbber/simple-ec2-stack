@@ -11,13 +11,30 @@ provider "aws" {
   region = var.default_region
 }
 
+module "core" {
+  source         = "./modules/core"
+  db_name        = var.db_name
+  db_user        = var.db_user
+  default_region = var.default_region
+  ecr_repo_name  = var.ecr_repo_name
+  environment    = var.environment
+}
+
 module "project" {
-  source          = "./modules/project"
-  instance_type   = var.instance_type
-  artifact_bucket = var.artifact_bucket
-  db_name         = var.db_name
-  db_user         = var.db_user
-  ecr_repo_name   = var.ecr_repo_name
-  environment     = var.environment
-  default_region  = var.default_region
+  source             = "./modules/project"
+  instance_type      = var.instance_type
+  artifact_bucket    = var.artifact_bucket
+  ecr_repo_name      = var.ecr_repo_name
+  environment        = var.environment
+  default_region     = var.default_region
+  ecr_repository_url = module.core.ecr_repository_url
+  vpc_id             = module.core.vpc_id
+  db_sg_id           = module.core.db_sg_id
+
+  depends_on = [module.core]
+}
+
+output "alb_url" {
+  description = "The ALB URL"
+  value       = "http://${module.project.alb_dns_name}"
 }

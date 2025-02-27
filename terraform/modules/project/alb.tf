@@ -10,13 +10,13 @@ resource "aws_lb_target_group" "my_alb_tg" {
   name                          = "my-tf-test-tg"
   port                          = 3000
   protocol                      = "HTTP"
-  vpc_id                        = aws_vpc.my_vpc.id
+  vpc_id                        = var.vpc_id
   load_balancing_algorithm_type = "round_robin"
 
   health_check {
     protocol            = "HTTP"
     port                = "3000"
-    path                = "/"
+    path                = "/health"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 3
@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
   lifecycle {
     replace_triggered_by = [aws_autoscaling_group.my_asg]
   }
-  depends_on = [aws_autoscaling_group.my_asg]
+  depends_on = [time_sleep.wait_for_asg]
 }
 
 resource "aws_lb_listener" "my_alb_listener" {

@@ -8,9 +8,9 @@ resource "aws_autoscaling_group" "my_asg" {
     id      = aws_launch_template.my_launch_template.id
     version = "$Latest"
   }
-  lifecycle {
-    replace_triggered_by = [aws_launch_template.my_launch_template, null_resource.build_image]
-  }
+  # lifecycle {
+  #   replace_triggered_by = [aws_launch_template.my_launch_template, null_resource.build_image]
+  # }
 
   depends_on = [aws_launch_template.my_launch_template, null_resource.build_image]
 }
@@ -20,10 +20,10 @@ resource "aws_autoscaling_attachment" "my_asg_attachment" {
   autoscaling_group_name = aws_autoscaling_group.my_asg.name
 }
 
+# wait for asg launch new instances, always triggers for new build
 resource "time_sleep" "wait_for_asg" {
   lifecycle {
     replace_triggered_by = [aws_autoscaling_group.my_asg]
   }
-  depends_on      = [aws_autoscaling_group.my_asg]
-  create_duration = "120s"
+  create_duration = "240s"
 }
