@@ -4,38 +4,51 @@ data "aws_rds_engine_version" "version" {
 }
 
 resource "random_password" "db_password" {
-  length           = 16
-  special         = true
+  length  = 16
+  special = true
+}
+
+resource "aws_db_subnet_group" "rds_subnet_group" {
+  name        = "rds-subnet-group"
+  description = "My RDS Subnet Group"
+  subnet_ids = [
+    aws_subnet.db_subnet1.id,
+    aws_subnet.db_subnet2.id
+  ]
+
+  tags = {
+    Name = "rds-subnet-group"
+  }
 }
 
 resource "aws_db_instance" "rds_postgres" {
-  identifier            = "my-postgres-db"
+  identifier           = "my-postgres-db"
   engine               = "postgres"
   engine_version       = data.aws_rds_engine_version.version.version
   instance_class       = "db.t3.micro"
   allocated_storage    = 20
   storage_type         = "gp2"
-  username            = var.db_user
-  password            = random_password.db_password.result
-  db_name             = var.db_name
-  publicly_accessible  = true
+  username             = var.db_user
+  password             = random_password.db_password.result
+  db_name              = var.db_name
+  publicly_accessible  = false
   skip_final_snapshot  = true
   deletion_protection  = false
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
 
-  multi_az             = false
+  multi_az                = false
   backup_retention_period = 0
 
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
 }
 
-resource "aws_security_group" "rds_sg" {
-  name        = "rds-free-tier-sg"
-  description = "Allow PostgreSQL inbound traffic"
+# disable ssl check
+resource "aws_db_parameter_group" "custom_pg15" {
+  name   = "custom-postgres15-ssl"
+  family = "postgres15"
 
-  ingress {
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  parameter {
+    name  = "rds.force_ssl"
+    value = "0"
   }
 }

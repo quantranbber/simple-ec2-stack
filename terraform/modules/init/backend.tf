@@ -16,5 +16,5 @@ resource "aws_s3_bucket_ownership_controls" "terraform_backend_ownership" {
 
 resource "aws_s3_bucket_acl" "terraform_backend_acl" {
   bucket = aws_s3_bucket.terraform_backend.id
-  acl = "private"
+  acl    = "private"
 }

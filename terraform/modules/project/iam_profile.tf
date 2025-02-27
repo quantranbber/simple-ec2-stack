@@ -16,7 +16,7 @@ resource "aws_iam_role" "ec2_role" {
 # resource "aws_iam_policy" "s3_read_policy" {
 #   name        = "S3ArtifactReadOnlyPolicy"
 #   description = "Allow EC2 to read from S3 bucket"
-  
+
 #   policy = jsonencode({
 #     Version = "2012-10-17",
 #     Statement = [{
@@ -46,7 +46,7 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action   = [
+        Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"

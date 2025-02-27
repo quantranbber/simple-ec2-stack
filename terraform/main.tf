@@ -2,7 +2,7 @@ terraform {
   required_version = "1.9.8"
   backend "s3" {
     bucket = ""
-    key = ""
+    key    = ""
     region = ""
   }
 }
@@ -12,12 +12,12 @@ provider "aws" {
 }
 
 module "project" {
-  source = "./modules/project"
-  instance_type = var.instance_type
+  source          = "./modules/project"
+  instance_type   = var.instance_type
   artifact_bucket = var.artifact_bucket
-  db_name = var.db_name
-  db_user= var.db_user
-  ecr_repo_name = var.ecr_repo_name
-  environment = var.environment
-  default_region = var.default_region
+  db_name         = var.db_name
+  db_user         = var.db_user
+  ecr_repo_name   = var.ecr_repo_name
+  environment     = var.environment
+  default_region  = var.default_region
 }
