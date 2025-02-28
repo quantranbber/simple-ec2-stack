@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
     protocol            = "HTTP"
     port                = "3000"
     path                = "/health"
-    interval            = 30
+    interval            = 300
     timeout             = 5
     healthy_threshold   = 3
     unhealthy_threshold = 3
@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
   lifecycle {
     replace_triggered_by = [aws_autoscaling_group.my_asg]
   }
-  depends_on = [time_sleep.wait_for_asg]
+  depends_on = [time_sleep.wait_for_asg, time_sleep.wait_for_update_img]
 }
 
 resource "aws_lb_listener" "my_alb_listener" {

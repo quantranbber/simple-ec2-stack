@@ -5,7 +5,7 @@ data "aws_rds_engine_version" "version" {
 
 resource "random_password" "db_password" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_db_subnet_group" "rds_subnet_group" {

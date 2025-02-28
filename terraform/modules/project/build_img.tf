@@ -22,20 +22,28 @@ resource "null_resource" "get_cred_ecr_repository" {
   }
 }
 
-# TODO
+# update ec2 docker containers without terminate asg
 resource "null_resource" "send_ssm_command" {
   triggers = {
     always_run = timestamp()
   }
 
-  depends_on = [null_resource.build_image]
+  depends_on = [time_sleep.wait_for_asg, null_resource.build_image]
 
   provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
+    interpreter = ["/bin/sh", "-c"]
     command     = "sh ${path.module}/build.sh"
     environment = {
       REGION   = var.default_region
       ASG_NAME = aws_autoscaling_group.my_asg.name
     }
   }
+}
+
+# wait ssm send command run success
+resource "time_sleep" "wait_for_update_img" {
+  lifecycle {
+    replace_triggered_by = [null_resource.send_ssm_command]
+  }
+  create_duration = "240s"
 }

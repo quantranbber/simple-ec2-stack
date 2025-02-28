@@ -8,9 +8,9 @@ resource "aws_autoscaling_group" "my_asg" {
     id      = aws_launch_template.my_launch_template.id
     version = "$Latest"
   }
-  # lifecycle {
-  #   replace_triggered_by = [aws_launch_template.my_launch_template, null_resource.build_image]
-  # }
+  lifecycle {
+    create_before_destroy = true
+  }
 
   depends_on = [aws_launch_template.my_launch_template, null_resource.build_image]
 }
@@ -25,5 +25,5 @@ resource "time_sleep" "wait_for_asg" {
   lifecycle {
     replace_triggered_by = [aws_autoscaling_group.my_asg]
   }
-  create_duration = "240s"
+  create_duration = "300s"
 }

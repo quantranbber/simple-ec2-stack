@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sync": "aws s3 sync . s3://terraform-test-bucket-7634341/codes --exclude \"*\" --include \"package.json\" --include \"package-lock.json\" --include \"index.js\"",
+    "sync": "aws s3 sync . s3://terraform-test-bucket-7634341/codes --exclude \"*\" --include \".env.example\" --include \"docker-compose.yml\"",
     "fmt": "cd terraform && terraform fmt -recursive",
     "start": "node index.js"
   },
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "pg-promise": "^11.10.2"
   }
