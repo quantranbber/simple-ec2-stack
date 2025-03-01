@@ -33,7 +33,8 @@ usermod -aG docker ubuntu
 
 ##### pull ecr image and run
 # set env
-aws s3 sync s3://terraform-test-bucket-7634341/codes .
+S3_BUCKET=$(aws ssm get-parameter --name \"/myapp/s3/bucket\" --query \"Parameter.Value\" --output text)
+aws s3 sync s3://$S3_BUCKET/codes .
 REGION=ap-southeast-1
 ECR_URL=$(aws ssm get-parameter --name "/myapp/ecr/url" --query "Parameter.Value" --output text)
 ECR_IMAGE=$(aws ssm get-parameter --name "/myapp/ecr/image" --query "Parameter.Value" --output text)
@@ -45,6 +46,7 @@ DB_PASSWORD=$(aws ssm get-parameter --with-decryption --name "/myapp/db/DB_PASSW
 sed -i "s/^REGION=[^$]*/REGION=${REGION}/" .env.example
 sed -i "s#^ECR_URL=[^$]*#ECR_URL=${ECR_URL}#" .env.example
 sed -i "s/^ECR_IMAGE=[^$]*/ECR_IMAGE=${ECR_IMAGE}/" .env.example
+sed -i "s/^S3_BUCKET=[^$]*/S3_BUCKET=${S3_BUCKET}/" .env.example
 sed -i "s/^DB_HOST=[^$]*/DB_HOST=${DB_HOST}/" .env.example
 sed -i "s/^DB_NAME=[^$]*/DB_NAME=${DB_NAME}/" .env.example
 sed -i "s/^DB_USER=[^$]*/DB_USER=${DB_USER}/" .env.example

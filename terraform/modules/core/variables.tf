@@ -3,6 +3,7 @@ variable "environment" {}
 variable "db_name" {}
 variable "db_user" {}
 variable "ecr_repo_name" {}
+variable "s3_bucket" {}
 variable "project_image_scan_on_push" {
   type    = string
   default = "true"

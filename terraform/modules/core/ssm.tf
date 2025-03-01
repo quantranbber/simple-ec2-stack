@@ -35,3 +35,10 @@ resource "aws_ssm_parameter" "ecr_image_name" {
   type  = "String"
   value = "${var.ecr_repo_name}:latest"
 }
+
+# s3
+resource "aws_ssm_parameter" "s3_bucket" {
+  name  = "/myapp/s3/bucket"
+  type  = "String"
+  value = var.s3_bucket
+}

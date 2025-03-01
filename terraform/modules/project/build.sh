@@ -8,7 +8,8 @@ aws ssm send-command \
     --document-name "AWS-RunShellScript" \
     --targets "Key=instanceIds,Values=${INSTANCE_IDS}" \
     --parameters commands='[
-        "aws s3 sync s3://terraform-test-bucket-7634341/codes .",
+        "S3_BUCKET=$(aws ssm get-parameter --name \"/myapp/s3/bucket\" --query \"Parameter.Value\" --output text)",
+        "aws s3 sync s3://$S3_BUCKET/codes .",
         "ECR_URL=$(aws ssm get-parameter --name \"/myapp/ecr/url\" --query \"Parameter.Value\" --output text)",
         "ECR_IMAGE=$(aws ssm get-parameter --name \"/myapp/ecr/image\" --query \"Parameter.Value\" --output text)",
         "DB_HOST=$(aws ssm get-parameter --name \"/myapp/db/DB_HOST\" --query \"Parameter.Value\" --output text)",
@@ -18,6 +19,7 @@ aws ssm send-command \
         "sed -i \"s#^REGION=[^$]*#REGION=${REGION}#\" .env.example",
         "sed -i \"s#^ECR_URL=[^$]*#ECR_URL=${ECR_URL}#\" .env.example",
         "sed -i \"s/^ECR_IMAGE=[^$]*/ECR_IMAGE=${ECR_IMAGE}/\" .env.example",
+        "sed -i \"s/^S3_BUCKET=[^$]*/S3_BUCKET=${S3_BUCKET}/\" .env.example",
         "sed -i \"s/^DB_HOST=[^$]*/DB_HOST=${DB_HOST}/\" .env.example",
         "sed -i \"s/^DB_NAME=[^$]*/DB_NAME=${DB_NAME}/\" .env.example",
         "sed -i \"s/^DB_USER=[^$]*/DB_USER=${DB_USER}/\" .env.example",

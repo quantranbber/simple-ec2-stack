@@ -18,6 +18,7 @@ module "core" {
   default_region = var.default_region
   ecr_repo_name  = var.ecr_repo_name
   environment    = var.environment
+  s3_bucket      = var.artifact_bucket
 }
 
 module "project" {
