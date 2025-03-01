@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "sync": "aws s3 sync . s3://terraform-test-bucket-7634341/codes --exclude \"*\" --include \".env.example\" --include \"docker-compose.yml\"",
-    "fmt": "cd terraform && terraform fmt -recursive",
+    "tf:fmt": "cd terraform && terraform fmt -recursive",
+    "tf:module:core": "cd terraform && terraform apply -auto-approve -target=module.core",
+    "tf:module:project": "cd terraform && terraform apply -auto-approve -target=module.project",
     "start": "node index.js"
   },
   "author": "",

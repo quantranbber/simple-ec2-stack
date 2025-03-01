@@ -15,4 +15,16 @@ resource "aws_launch_template" "my_launch_template" {
     create_before_destroy = true
   }
   depends_on = [null_resource.build_image]
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "myprj-${random_id.instance_suffix.hex}"
+    }
+  }
+}
+
+resource "random_id" "instance_suffix" {
+  byte_length = 2
 }

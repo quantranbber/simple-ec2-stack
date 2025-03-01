@@ -17,7 +17,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
     protocol            = "HTTP"
     port                = "3000"
     path                = "/health"
-    interval            = 300
+    interval            = 60
     timeout             = 5
     healthy_threshold   = 3
     unhealthy_threshold = 3
