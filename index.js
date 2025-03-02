@@ -7,7 +7,10 @@ const AWS = require("aws-sdk");
 const app = express()
 app.use(cors());
 const port = 3000
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+  region: process.env.REGION || "ap-southeast-1",
+  signatureVersion: "v4"
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -37,13 +40,14 @@ async function createTableIfNotExists() {
   }
 }
 
-app.get('/presignedUrl', async (req, res) => {
+app.post('/presignedUrl', async (req, res) => {
   try {
     await createTableIfNotExists();
 
-    const path = `/uploads/${req.body.fileName}`;
-    const params = {Bucket: process.env.S3_BUCKET, Key: path};
-    const signedUrl = s3.getSignedUrl('getObject', params);
+    console.log('bucket: ', process.env.S3_BUCKET)
+    const path = `uploads/${req.body.fileName}`;
+    const params = {Bucket: process.env.S3_BUCKET, Key: path, Expires: 60*60, ACL: 'public-read'};
+    const signedUrl = await s3.getSignedUrlPromise('putObject', params);
     
     const result = await db.one('INSERT INTO files(name, url) VALUES($1, $2) RETURNING *', [req.body.fileName, path]);
     res.status(201).json({

@@ -28,22 +28,23 @@ resource "null_resource" "send_ssm_command" {
     always_run = timestamp()
   }
 
-  depends_on = [time_sleep.wait_for_asg, null_resource.build_image]
+  depends_on = [aws_lb.my_alb, null_resource.build_image]
 
   provisioner "local-exec" {
     interpreter = ["/bin/sh", "-c"]
     command     = "sh ${path.module}/build.sh"
     environment = {
       REGION   = var.default_region
+      ALB_DNS  = aws_lb.my_alb.dns_name
       ASG_NAME = aws_autoscaling_group.my_asg.name
     }
   }
 }
 
 # wait ssm send command run success
-resource "time_sleep" "wait_for_update_img" {
-  lifecycle {
-    replace_triggered_by = [null_resource.send_ssm_command]
-  }
-  create_duration = "240s"
-}
+# resource "time_sleep" "wait_for_update_img" {
+#   lifecycle {
+#     replace_triggered_by = [null_resource.send_ssm_command]
+#   }
+#   create_duration = "360s"
+# }

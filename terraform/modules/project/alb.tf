@@ -26,7 +26,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
   lifecycle {
     replace_triggered_by = [aws_autoscaling_group.my_asg]
   }
-  depends_on = [time_sleep.wait_for_asg, time_sleep.wait_for_update_img]
+  depends_on = [aws_autoscaling_group.my_asg]
 }
 
 resource "aws_lb_listener" "my_alb_listener" {

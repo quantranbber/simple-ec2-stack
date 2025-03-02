@@ -5,6 +5,6 @@ WORKDIR /home/node/app
 COPY package.json ./
 COPY package-lock.json ./
 COPY index.js ./
-RUN npm i
+RUN npm install
 EXPOSE $PORT
 CMD [ "npm", "run", "start" ]
