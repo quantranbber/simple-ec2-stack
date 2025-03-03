@@ -19,7 +19,7 @@ variable "instance_type" {
 variable "artifact_bucket" {
   type        = string
   description = "source codes artifact bucket"
-  default     = "terraform-test-bucket-7634341"
+  default     = "terraform-test-bucket-020197"
 }
 
 variable "db_name" {

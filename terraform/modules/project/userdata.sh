@@ -40,7 +40,7 @@ echo "3. docker engine install successful" >> $LOG_FILE 2>&1
 
 ##### pull ecr image and run
 # set env
-S3_BUCKET=terraform-test-bucket-7634341
+S3_BUCKET=$(aws ssm get-parameter --name "/myapp/s3/bucket" --query "Parameter.Value" --output text)
 mkdir codes
 cd codes
 echo "4. cd to codes" >> $LOG_FILE 2>&1
