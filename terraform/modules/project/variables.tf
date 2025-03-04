@@ -6,3 +6,7 @@ variable "vpc_id" {}
 variable "ecr_repo_name" {}
 variable "ecr_repository_url" {}
 variable "db_sg_id" {}
+variable "alb_dns" {}
+variable "alb_arn" {}
+variable "alb_sg_id" {}
+variable "nat_gtw_id" {}

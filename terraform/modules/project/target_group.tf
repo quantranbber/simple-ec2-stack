@@ -1,11 +1,3 @@
-resource "aws_lb" "my_alb" {
-  name               = "my-tf-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb_sg.id]
-  subnets            = [aws_subnet.lb_subnet1.id, aws_subnet.lb_subnet2.id]
-}
-
 resource "aws_lb_target_group" "my_alb_tg" {
   name                          = "my-tf-test-tg"
   port                          = 3000
@@ -30,7 +22,7 @@ resource "aws_lb_target_group" "my_alb_tg" {
 }
 
 resource "aws_lb_listener" "my_alb_listener" {
-  load_balancer_arn = aws_lb.my_alb.arn
+  load_balancer_arn = var.alb_arn
   port              = 80
   protocol          = "HTTP"
 

@@ -31,11 +31,15 @@ module "project" {
   ecr_repository_url = module.core.ecr_repository_url
   vpc_id             = module.core.vpc_id
   db_sg_id           = module.core.db_sg_id
+  alb_dns            = module.core.alb_dns
+  alb_arn            = module.core.alb_arn
+  alb_sg_id          = module.core.alb_sg_id
+  nat_gtw_id         = module.core.nat_gtw_id
 
   depends_on = [module.core]
 }
 
 output "alb_url" {
   description = "The ALB URL"
-  value       = "http://${module.project.alb_dns_name}"
+  value       = "http://${module.core.alb_dns}"
 }

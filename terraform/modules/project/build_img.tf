@@ -28,14 +28,14 @@ resource "null_resource" "send_ssm_command" {
     always_run = timestamp()
   }
 
-  depends_on = [aws_lb.my_alb, null_resource.build_image]
+  depends_on = [null_resource.build_image]
 
   provisioner "local-exec" {
     interpreter = ["/bin/sh", "-c"]
     command     = "sh ${path.module}/build.sh"
     environment = {
       REGION   = var.default_region
-      ALB_DNS  = aws_lb.my_alb.dns_name
+      ALB_DNS  = var.alb_dns
       ASG_NAME = aws_autoscaling_group.my_asg.name
     }
   }
