@@ -30,11 +30,11 @@ module "project" {
   default_region     = var.default_region
   ecr_repository_url = module.core.ecr_repository_url
   vpc_id             = module.core.vpc_id
-  db_sg_id           = module.core.db_sg_id
   alb_dns            = module.core.alb_dns
   alb_arn            = module.core.alb_arn
-  alb_sg_id          = module.core.alb_sg_id
-  nat_gtw_id         = module.core.nat_gtw_id
+  ec2_sg_id          = module.core.ec2_sg_id
+  ec2_subnet1_id     = module.core.ec2_subnet1_id
+  ec2_subnet2_id     = module.core.ec2_subnet2_id
 
   depends_on = [module.core]
 }

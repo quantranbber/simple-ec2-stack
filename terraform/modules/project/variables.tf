@@ -5,8 +5,8 @@ variable "artifact_bucket" {}
 variable "vpc_id" {}
 variable "ecr_repo_name" {}
 variable "ecr_repository_url" {}
-variable "db_sg_id" {}
 variable "alb_dns" {}
 variable "alb_arn" {}
-variable "alb_sg_id" {}
-variable "nat_gtw_id" {}
+variable "ec2_sg_id" {}
+variable "ec2_subnet1_id" {}
+variable "ec2_subnet2_id" {}

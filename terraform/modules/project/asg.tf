@@ -3,7 +3,7 @@ resource "aws_autoscaling_group" "my_asg" {
   desired_capacity    = 2
   min_size            = 1
   max_size            = 3
-  vpc_zone_identifier = [aws_subnet.ec2_subnet1.id, aws_subnet.ec2_subnet2.id]
+  vpc_zone_identifier = [var.ec2_subnet1_id, var.ec2_subnet2_id]
   health_check_type   = "EC2"
   launch_template {
     id      = aws_launch_template.my_launch_template.id

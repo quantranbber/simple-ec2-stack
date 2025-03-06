@@ -9,7 +9,7 @@ resource "aws_launch_template" "my_launch_template" {
   }
   network_interfaces {
     associate_public_ip_address = true
-    security_groups             = [aws_security_group.ec2_sg.id]
+    security_groups             = [var.ec2_sg_id]
   }
   lifecycle {
     create_before_destroy = true
