@@ -4,14 +4,6 @@ apt update -y
 LOG_FILE="/var/log/user-data.log"
 echo "Starting user data at $(date)" > $LOG_FILE 2>&1
 
-
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm install 20
-node -v
-echo "1. nodejs runtime install successful" >> $LOG_FILE 2>&1
-
 ###### install aws cli
 apt install unzip -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
