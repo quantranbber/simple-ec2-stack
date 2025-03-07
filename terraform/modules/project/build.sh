@@ -12,6 +12,7 @@ while true; do
             --document-name "AWS-RunShellScript" \
             --targets "Key=instanceIds,Values=${INSTANCE_IDS}" \
             --parameters commands='[
+                "cd codes",
                 "S3_BUCKET=$(aws ssm get-parameter --name \"/myapp/s3/bucket\" --query \"Parameter.Value\" --output text)",
                 "aws s3 sync s3://$S3_BUCKET/codes .",
                 "ECR_URL=$(aws ssm get-parameter --name \"/myapp/ecr/url\" --query \"Parameter.Value\" --output text)",
@@ -32,6 +33,7 @@ while true; do
                 "cp .env.example .env",
                 "aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin $ECR_URL",
                 "docker pull $ECR_URL/$ECR_IMAGE",
+                "docker rm -f myprj-be",
                 "docker compose up -d"
             ]' \
             --region ${REGION}
